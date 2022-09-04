@@ -54,16 +54,16 @@ model = keras.models.load_model("Sentiment Analysis of Movie Reviews")
 
 word_index = imdb.get_word_index()
 
-def encode_text(text):
+def encode_text(text): # encodes text using the encoder from the dataset
   tokens = keras.preprocessing.text.text_to_word_sequence(text)
   tokens = [word_index[word] if word in word_index else 0 for word in tokens]
   return pad_sequences([tokens], maxlen)[0]
-text = 'this was a good movie. very good. great. the best. excellent.'
+
 def predict(text):
-    encoded = encode_text(text)
-    pred = np.zeros((1,250))
-    pred[0] = encoded
-    result = model.predict(pred)
+    encoded = encode_text(text) #encodes the text inputed
+    pred = np.zeros((1,250)) # creates a numpy list with only 0s of shape 250
+    pred[0] = encoded # adds the encoded list to the prediction
+    result = model.predict(pred) # predicts, then prints the accuracy and whether it is positive or negative
     if result[0] >0.5:
         percentage = (result[0]-0.5)*200
         print(f"I am {float(percentage)}% sure that it is positive")
